@@ -68,8 +68,12 @@ def create(request):
 
         # ADD TO DATABASE
         new_user_id = User.objects.create(first_name=request.POST['first_name'], last_name=request.POST['last_name'], email=request.POST['email']).id
-
-        '''ASK KEVIN ABOUT HOW TO REDIRECT HERE'''
+        
         return redirect('/users/' + str(new_user_id))
     else:
         return redirect(reverse('users:index'))
+
+def destroy(request, id):
+    id = int(id)
+    User.objects.get(id=id).delete()
+    return redirect(reverse('users:index'))
