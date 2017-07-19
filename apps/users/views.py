@@ -17,9 +17,9 @@ def index(request):
     return render(request, 'users/index.html', context)
 
 def show(request, id):
+    id = int(id)
+    user = User.objects.get(id=id)
     if request.method == 'GET':
-        id = int(id)
-        user = User.objects.get(id=id)
         context = {
             "id": id,
             "full_name": user.first_name + " " + user.last_name,
@@ -28,7 +28,30 @@ def show(request, id):
         }
         return render(request, 'users/user.html', context)
     elif request.method == 'POST':
-        pass
+        # FORM VALIDATION
+        errors = User.objects.basic_validator(request.POST)
+        if len(errors):
+            for tag, error in errors.iteritems():
+                messages.error(request, error, extra_tags=tag)
+            return redirect('/users/' + str(id) + '/edit/')
+        
+        # UPDATE DATABASE
+        user.first_name = request.POST['first_name']
+        user.last_name = request.POST['last_name']
+        user.email = request.POST['email']
+        user.save()
+        return redirect('/users/' + str(id))
+
+def edit(request, id):
+    id = int(id)
+    user = User.objects.get(id=id)
+    context = {
+        "id": id,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "email": user.email
+    }
+    return render(request, 'users/edit.html', context)
 
 def new(request):
     return render(request, 'users/new.html')
@@ -44,10 +67,9 @@ def create(request):
             return redirect(reverse('users:new'))
 
         # ADD TO DATABASE
-        User.objects.create(first_name=request.POST['first_name'], last_name=request.POST['last_name'], email=request.POST['email'])
-        new_user_id = str(User.objects.last().id)
-        
+        new_user_id = User.objects.create(first_name=request.POST['first_name'], last_name=request.POST['last_name'], email=request.POST['email']).id
+
         '''ASK KEVIN ABOUT HOW TO REDIRECT HERE'''
-        return redirect('/users/' + new_user_id)
+        return redirect('/users/' + str(new_user_id))
     else:
         return redirect(reverse('users:index'))

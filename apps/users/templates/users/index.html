@@ -40,7 +40,7 @@
                 <th>{{user.created_at}}</th>
                 <th>
                     <a href="{% url 'users:show' id=user.id %}">Show</a> | 
-                    <a href="">Edit</a> | 
+                    <a href="{% url 'users:edit' id=user.id %}">Edit</a> | 
                     <a href="">Delete</a>
                 </th>
             </tr>
