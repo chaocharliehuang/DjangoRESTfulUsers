@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <title>Users</title>
+        <style>
+            body {
+                font-family: arial, sans-serif;
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Users</h1>
+        <table>
+            <tr>
+                <th>id</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <th>{{user.id}}</th>
+                <th>{{user.full_name}}</th>
+                <th>{{user.email}}</th>
+                <th>{{user.created_at}}</th>
+                <th>
+                    <a href="{% url 'users:show' id=user.id %}">Show</a> | 
+                    <a href="">Edit</a> | 
+                    <a href="">Delete</a>
+                </th>
+            </tr>
+            {% endfor %}
+        </table>
+        <p><a href="{% url 'users:new' %}">Add a new user</a></p>
+    </body>
+</html>

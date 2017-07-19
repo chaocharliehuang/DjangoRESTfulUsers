@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <title>User {{id}}</title>
+        <style>
+            body {
+                font-family: arial, sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Edit User {{id}}</h1>
+        <p>Full Name: {{full_name}}</p>
+        <p>Email: {{email}}</p>
+        <p>Created at: {{created_at}}</p>
+        <p>
+            <a href="">Edit</a> | 
+            <a href="">Delete</a> | 
+            <a href="{% url 'users:index' %}">Go Back</a>
+        </p>
+    </body>
+</html>
